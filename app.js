@@ -3,29 +3,7 @@ const youtube = require('./youtube');
 const express= require("express");
 const app=express();
 app.get("/",function (req,res){
-    // try {
-    //     (async () => {
-    
-    //         const browser = await puppeteer.launch();
-    //         const page = await browser.newPage();
-          
-    //         await page.goto('https://www.youtube.com/results?search_query=bts');
-          
-    //         const link = await page.evaluate(() => {
-    //           return JSON.stringify(Array.from(document.querySelectorAll('#video-title')).map(x => x.href))
-    //         })
-            
-          
-    //          res.end(link)
-          
-    //         browser.close();
-            
-            
-    
-    //     })()
-    // } catch (err) {
-    //     console.error(err)
-    // }
+   
     (async () => {
         // Set up browser and page.
         const browser = await puppeteer.launch({
@@ -49,10 +27,7 @@ app.get("/",function (req,res){
 
 
 
-// function extractItems() {
-        
-//     return Array.from(document.querySelectorAll('#video-title')).map(x => x.href);
-// }
+
 function extractItems() {
     const extractedElements = Array.from(document.querySelectorAll('#video-title'));
     const items = [];
@@ -80,6 +55,6 @@ async function scrapeInfiniteScrollItems(
     } catch(e) { }
     return items;
   }
-  app.listen(3000, function(){
+  app.listen(process.env.PORT, function(){
     console.log("Server has started 123");
 })

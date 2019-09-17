@@ -2,18 +2,13 @@
   "name": "youtube-scraping",
   "version": "1.0.0",
   "description": "A node library that scrapes youtube information.",
-  "main": "index.js",
+  "main": "app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node app.js"
   },
   
-  "author": "Nikolai Tschacher",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/NikolaiT/youtube-scraping/issues"
-  },
-  "homepage": "https://github.com/NikolaiT/youtube-scraping#readme",
+  "author": "NVMr",
+  
   "dependencies": {
     "cheerio": "^1.0.0-rc.2",
     "express": "^4.17.1",
