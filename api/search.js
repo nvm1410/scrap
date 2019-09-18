@@ -7,7 +7,7 @@ module.exports = (req, res) => {
 
   (async () => {
     // Set up browser and page.
-    const { name = 'bts' } = req.query
+    const { string = 'bts' } = req.query
     const browser = await puppeteer.launch({
         args: chrome.args,
         executablePath: await chrome.executablePath,
@@ -20,10 +20,9 @@ module.exports = (req, res) => {
     await page.emulate(iPhone);
     
   
-    // Navigate to the demo page.
-    await page.goto(`https://m.youtube.com/results?search_query=${name}`);
+    await page.goto(`https://m.youtube.com/results?search_query=${string}`);
   
-    const items = await scrapeInfiniteScrollItems(page, extractItems, 30);
+    const items = await scrapeInfiniteScrollItems(page, extractItems, 40);
     res.send(JSON.stringify(items))
   
     // Close the browser.
@@ -42,7 +41,7 @@ function extractItems() {
     //xoa link khong phai video
     let container= Array.from(document.querySelectorAll('.compact-media-item-metadata-content'))
     for( var i = 0; i < container.length; i++){ 
-          if (!container[i].href.includes("watch?v=")) {
+          if ((!container[i].href.includes("watch?v=")) || (container[i].href.includes("start_radio")) ) {
             container.splice(i, 1); 
           }
         }
@@ -51,21 +50,21 @@ function extractItems() {
       links[i]=container[i].href
       ids[i]=links[i].substring(links[i].indexOf("?v=")+3)
       if (container[i].firstChild.tagName==="H4") {
-        titles[i]=container[i].firstChild.innerText
-        authors[i]=container[i].firstChild.nextSibling.firstChild.innerText
-        viewCounts[i]=container[i].firstChild.nextSibling.firstChild.nextSibling.innerText
-        times[i]=container[i].firstChild.nextSibling.firstChild.nextSibling.nextSibling.innerText
+        titles[i]=(container[i].firstChild)?container[i].firstChild.innerText:""
+        authors[i]=(container[i].firstChild.nextSibling.firstChild)?container[i].firstChild.nextSibling.firstChild.innerText:""
+        viewCounts[i]=(container[i].firstChild.nextSibling.firstChild.nextSibling)?container[i].firstChild.nextSibling.firstChild.nextSibling.innerText:""
+        times[i]=(container[i].firstChild.nextSibling.firstChild.nextSibling.nextSibling)?container[i].firstChild.nextSibling.firstChild.nextSibling.nextSibling.innerText:""
       }
       else if(container[i].firstChild.tagName==="YTM-BADGE-SUPPORTED-RENDERER"){
-        titles[i]=container[i].firstChild.nextSibling.innerText
-        authors[i]=container[i].firstChild.nextSibling.nextSibling.firstChild.innerText
-        viewCounts[i]=container[i].firstChild.nextSibling.nextSibling.firstChild.nextSibling.innerText
-        times[i]=container[i].firstChild.nextSibling.nextSibling.firstChild.nextSibling.nextSibling.innerText
+        titles[i]=(container[i].firstChild.nextSibling)?container[i].firstChild.nextSibling.innerText:""
+        authors[i]=(container[i].firstChild.nextSibling.nextSibling.firstChild)?container[i].firstChild.nextSibling.nextSibling.firstChild.innerText:""
+        viewCounts[i]=(container[i].firstChild.nextSibling.nextSibling.firstChild.nextSibling)?container[i].firstChild.nextSibling.nextSibling.firstChild.nextSibling.innerText:""
+        times[i]=(container[i].firstChild.nextSibling.nextSibling.firstChild.nextSibling.nextSibling)?container[i].firstChild.nextSibling.nextSibling.firstChild.nextSibling.nextSibling.innerText:""
       } else{
-        titles[i]="Not found"
-        authors[i]="Not found"
-        viewCounts[i]="Not found"
-        times[i]="Not found"
+        titles[i]=""
+        authors[i]=""
+        viewCounts[i]=""
+        times[i]=""
       }
    }
     let items=[]
