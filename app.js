@@ -1,5 +1,5 @@
-const puppeteer = require('puppeteer');
-const youtube = require('./youtube');
+const chrome = require('chrome-aws-lambda');
+const puppeteer = require('puppeteer-core');
 const express= require("express");
 const app=express();
 app.get("/",function (req,res){
@@ -7,9 +7,10 @@ app.get("/",function (req,res){
     (async () => {
         // Set up browser and page.
         const browser = await puppeteer.launch({
-          headless: false,
-          args: ['--no-sandbox', '--disable-setuid-sandbox'],
-        });
+          args: chrome.args,
+          executablePath: await chrome.executablePath,
+          headless: chrome.headless,
+      });
         const page = await browser.newPage();
         page.setViewport({ width: 1280, height: 720 });
       
@@ -24,7 +25,6 @@ app.get("/",function (req,res){
       })();
     
 })    
-
 
 
 
@@ -54,7 +54,10 @@ async function scrapeInfiniteScrollItems(
       }
     } catch(e) { }
     return items;
-  }
-  app.listen(process.env.PORT, function(){
+  }module.exports = (req, res) => {
+  const { name = 'World' } = req.query
+  res.send(`Hello ${name}!`)
+}
+  app.listen(3000, function(){
     console.log("Server has started 123");
 })
