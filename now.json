@@ -1,8 +1,12 @@
-{   "name": "getvideos",
+{   "name": "geteverything",
     "version": 2,
     "builds": [
-        { "src": "api/search.js", "use": "@now/node","config": { "maxLambdaSize": "40mb"}}
+        { "src": "api/searchvideo.js", "use": "@now/node","config": { "maxLambdaSize": "40mb"}},
+        { "src": "api/searchimage.js", "use": "@now/node","config": { "maxLambdaSize": "40mb"}}
     ],
-    "routes": [{ "src": "/api/search", "dest": "api/search.js" }]
+    "routes": [
+        { "src": "/api/searchimage", "dest": "api/searchimage.js" },
+        { "src": "/api/searchvideo", "dest": "api/searchvideo.js" }
+    ]
       
 }
