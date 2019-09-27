@@ -2,11 +2,13 @@
     "version": 2,
     "builds": [
         { "src": "api/searchvideo.js", "use": "@now/node","config": { "maxLambdaSize": "40mb"}},
-        { "src": "api/searchimage.js", "use": "@now/node","config": { "maxLambdaSize": "40mb"}}
+        { "src": "api/searchimage.js", "use": "@now/node","config": { "maxLambdaSize": "40mb"}},
+        { "src": "api/searchnews.js", "use": "@now/node","config": { "maxLambdaSize": "40mb"}}
     ],
     "routes": [
         { "src": "/api/searchimage", "dest": "api/searchimage.js" },
-        { "src": "/api/searchvideo", "dest": "api/searchvideo.js" }
+        { "src": "/api/searchvideo", "dest": "api/searchvideo.js" },
+        { "src": "/api/searchnews", "dest": "api/searchnews.js" }
     ]
       
 }

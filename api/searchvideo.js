@@ -7,7 +7,7 @@ module.exports = (req, res) => {
 
   (async () => {
     // Set up browser and page.
-    const { string = 'bts' } = req.query
+    const { string = 'bts',count = 50,hl="vi",gl="VN" } = req.query
     const browser = await puppeteer.launch({
         args: chrome.args,
         executablePath: await chrome.executablePath,
@@ -15,14 +15,14 @@ module.exports = (req, res) => {
     });
     const page = await browser.newPage();
     await page.setExtraHTTPHeaders({
-      'Accept-Language': 'vi-VN,vi;q=0.5'
+      'Accept-Language': `${hl}-${gl}`
     });
     await page.emulate(iPhone);
     
   
     await page.goto(`https://m.youtube.com/results?search_query=${string}`);
   
-    const items = await scrapeInfiniteScrollItems(page, extractItems, 40);
+    const items = await scrapeInfiniteScrollItems(page, extractItems, count);
     res.send(JSON.stringify(items))
   
     // Close the browser.
